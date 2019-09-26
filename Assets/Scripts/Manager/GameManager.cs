@@ -81,7 +81,6 @@ namespace com.hermitGames.rp
 
             if (!isMine) {
                 player.GetComponent<Player>().enabled = false;
-                player.GetComponent<Rigidbody>().isKinematic = true;
                 player.GetComponent<CharacterController>().enabled = false;
                 player.GetComponentInChildren<Camera>().enabled = false;
                 player.GetComponentInChildren<AudioListener>().enabled = false;
