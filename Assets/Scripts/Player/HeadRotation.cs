@@ -36,7 +36,7 @@ namespace com.hermitGames.rp
                         GameManager.instance.CmdRegisterEntity(this.objectToSpawn, hit.point, Vector3.zero);
                     }
 
-                    if (Input.GetKeyDown(KeyCode.R)) {
+                    if (Input.GetKeyDown(KeyCode.R) && hit.collider.name.StartsWith(objectToSpawn.name)) {
                         GameManager.instance.CmdDestroyEntity(hit.collider.gameObject);
                     }
                 }
