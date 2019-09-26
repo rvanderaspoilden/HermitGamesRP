@@ -19,9 +19,7 @@ namespace com.hermitGames.rp
 
             this.SetPrefabDatabase();
 
-            foreach (User user in NetworkManager.instance.GetEntities().users) {
-                this.InstantiatePlayer(user, NetworkManager.instance.GetLocalUser().id == user.id);
-            }
+            this.InitEntities();
         }
 
         // Update is called once per frame
@@ -81,7 +79,6 @@ namespace com.hermitGames.rp
 
             if (!isMine) {
                 player.GetComponent<Player>().enabled = false;
-                player.GetComponent<Rigidbody>().isKinematic = true;
                 player.GetComponent<CharacterController>().enabled = false;
                 player.GetComponentInChildren<Camera>().enabled = false;
                 player.GetComponentInChildren<AudioListener>().enabled = false;
@@ -97,6 +94,24 @@ namespace com.hermitGames.rp
 
         private void SetPrefabDatabase() {
             this.prefabDatabase = new List<GameObject>(Resources.LoadAll<GameObject>("Prefabs")).ToDictionary((GameObject prefab) => prefab.name);
+        }
+
+        private void InitEntities() {
+            foreach (Entity entity in NetworkManager.instance.GetEntities().buildings) {
+                this.InstantiateEntity(entity, NetworkManager.instance.GetLocalUser().id == entity.ownerId);
+            }
+
+            foreach (Entity entity in NetworkManager.instance.GetEntities().roads) {
+                this.InstantiateEntity(entity, NetworkManager.instance.GetLocalUser().id == entity.ownerId);
+            }
+
+            foreach (Entity entity in NetworkManager.instance.GetEntities().props) {
+                this.InstantiateEntity(entity, NetworkManager.instance.GetLocalUser().id == entity.ownerId);
+            }
+
+            foreach (User user in NetworkManager.instance.GetEntities().users) {
+                this.InstantiatePlayer(user, NetworkManager.instance.GetLocalUser().id == user.id);
+            }
         }
     }
 }
