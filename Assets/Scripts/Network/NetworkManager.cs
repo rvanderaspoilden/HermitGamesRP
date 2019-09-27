@@ -20,6 +20,7 @@ namespace com.hermitGames.rp
         // Start is called before the first frame update
         void Start() {
             this.socketIO = GetComponent<SocketIOComponent>();
+            this.socketIO.On("disconnect", this.CloseEvent);
             this.socketIO.On("Packet::InitGame", this.InitGame);
             this.socketIO.On("Packet::OtherPlayerJoined", this.OtherPlayerJoined);
             this.socketIO.On("Packet::OtherPlayerLeft", this.OtherPlayerLeft);
@@ -61,6 +62,13 @@ namespace com.hermitGames.rp
             } else {
                 Debug.LogError("Player is not connected to server");
             }
+        }
+
+        private void CloseEvent(SocketIOEvent e) {
+            Debug.LogError("Connection with server lost");
+            this.localUser = null;
+            this.entities = null;
+            SceneManager.LoadScene("Launcher");
         }
 
         private void InitGame(SocketIOEvent e) {

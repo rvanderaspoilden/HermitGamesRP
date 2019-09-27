@@ -15,25 +15,32 @@ namespace com.hermitGames.rp
 
         private CharacterController characterController;
 
+        private float forwardSpeed = 0f;
+
+        private float isSprinting = 0f;
+
+        private Animator animator;
+
         // Start is called before the first frame update
-        void Start()
-        {
+        void Start() {
             this.characterController = GetComponent<CharacterController>();
+            this.animator = GetComponent<Animator>();
         }
 
         // Update is called once per frame
-        void Update()
-        {
-            if (characterController.isGrounded)
-            {
+        void Update() {
+            if (characterController.isGrounded) {
+                this.isSprinting = Input.GetKey(KeyCode.LeftShift) ? 2f : 1f;
+
                 moveDirection = new Vector3(Input.GetAxis("Horizontal"), 0.0f, Input.GetAxis("Vertical"));
                 moveDirection = this.transform.TransformDirection(moveDirection);
-                moveDirection *= speed;
+                moveDirection *= speed * this.isSprinting;
 
-                if (Input.GetButton("Jump"))
-                {
+                if (Input.GetButton("Jump")) {
                     moveDirection.y = jumpSpeed;
                 }
+
+                this.animator.SetFloat("moveSpeed", Input.GetAxis("Vertical") * this.isSprinting);
             }
 
             moveDirection.y -= gravity * Time.deltaTime;

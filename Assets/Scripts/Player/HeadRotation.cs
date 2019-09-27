@@ -8,26 +8,28 @@ namespace com.hermitGames.rp
     {
         public GameObject objectToSpawn;
 
-        public float sensitivityY = 15F;
-        public float minimumX = -360F;
-        public float maximumX = 360F;
-        public float minimumY = -60F;
-        public float maximumY = 60F;
-        float rotationY = 0F;
+        [SerializeField] private float sensitivityY = 15F;
+        [SerializeField] private float minimumX = -360F;
+        [SerializeField] private float maximumX = 360F;
+        [SerializeField] private float minimumY = -60F;
+        [SerializeField] private float maximumY = 60F;
+        private float rotationY = 0F;
+
+        private Transform cameraTransform;
+        private Transform bodyTransform;
 
         // Start is called before the first frame update
         void Start()
         {
-
+            this.cameraTransform = GetComponentInChildren<Camera>().transform;
+            this.bodyTransform = GetComponentInParent<Player>().transform;
         }
 
         // Update is called once per frame
         void Update()
         {
             rotationY += Input.GetAxis("Mouse Y") * sensitivityY;
-            rotationY = Mathf.Clamp(rotationY, minimumY, maximumY);
-
-            transform.localEulerAngles = new Vector3(-rotationY, 0, 0);
+            rotationY = Mathf.Clamp(rotationY, minimumY, maximumY); 
 
             RaycastHit hit;
             if (Physics.Raycast(this.transform.position, this.transform.forward, out hit, 10f)) {
@@ -41,6 +43,11 @@ namespace com.hermitGames.rp
                     }
                 }
             }
+        }
+
+        private void LateUpdate() {
+            transform.localRotation = Quaternion.Euler(new Vector3(-rotationY, 0, 0));
+            this.cameraTransform.rotation = Quaternion.Euler(new Vector3(transform.localEulerAngles.x, this.bodyTransform.eulerAngles.y, 0));
         }
     }
 }
