@@ -28,6 +28,7 @@ namespace com.hermitGames.rp
             this.socketIO.On("Packet::EntityRotate", this.EntityRotate);
             this.socketIO.On("Packet::EntityCreated", this.EntityCreated);
             this.socketIO.On("Packet::EntityDestroyed", this.EntityDestroyed);
+            this.socketIO.On("Packet::EntityDoAnimation", this.EntityDoAnimation);
         }
 
         void Awake() {
@@ -84,6 +85,11 @@ namespace com.hermitGames.rp
         private void EntityMove(SocketIOEvent e) {
             UpdatePositionRequest req = JsonUtility.FromJson<UpdatePositionRequest>(e.data.ToString());
             GameManager.instance.EntityMoved(req.entityId, new Vector3(float.Parse(req.x), float.Parse(req.y), float.Parse(req.z)));
+        }
+
+        private void EntityDoAnimation(SocketIOEvent e) {
+            SetAnimationRequest req = JsonUtility.FromJson<SetAnimationRequest>(e.data.ToString());
+            GameManager.instance.EntityDoAnimation(req);
         }
 
         private void EntityRotate(SocketIOEvent e) {

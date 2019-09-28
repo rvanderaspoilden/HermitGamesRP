@@ -31,6 +31,10 @@ namespace com.hermitGames.rp
             this.networkIdentities[id].GetComponent<NetworkTransform>().UpdatePosition(newPosition);
         }
 
+        public void EntityDoAnimation(SetAnimationRequest req) {
+            this.networkIdentities[req.entityId].GetComponent<NetworkAnimator>().SetAnimation(req);
+        }
+
         public void EntityRotated(string id, Vector3 newPosition) {
             this.networkIdentities[id].GetComponent<NetworkTransform>().UpdateRotation(newPosition);
         }
