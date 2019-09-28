@@ -4,6 +4,8 @@ using UnityEngine;
 
 namespace com.hermitGames.rp
 {
+    [RequireComponent(typeof(NetworkAnimator))]
+    [RequireComponent(typeof(NetworkTransform))]
     public class Player : MonoBehaviour
     {
         [SerializeField] private float speed = 6.0f;
@@ -19,12 +21,12 @@ namespace com.hermitGames.rp
 
         private float isSprinting = 0f;
 
-        private Animator animator;
+        private NetworkAnimator networkAnimator;
 
         // Start is called before the first frame update
         void Start() {
             this.characterController = GetComponent<CharacterController>();
-            this.animator = GetComponent<Animator>();
+            this.networkAnimator = GetComponent<NetworkAnimator>();
         }
 
         // Update is called once per frame
@@ -40,7 +42,7 @@ namespace com.hermitGames.rp
                     moveDirection.y = jumpSpeed;
                 }
 
-                this.animator.SetFloat("moveSpeed", Input.GetAxis("Vertical") * this.isSprinting);
+                this.networkAnimator.SetAnimation(new SetAnimationRequest("moveSpeed", VariableType.FLOAT, (Input.GetAxis("Vertical") * this.isSprinting).ToString()));
             }
 
             moveDirection.y -= gravity * Time.deltaTime;
