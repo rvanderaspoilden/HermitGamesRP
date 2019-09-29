@@ -9,8 +9,6 @@ namespace com.hermitGames.rp
         public GameObject objectToSpawn;
 
         [SerializeField] private float sensitivityY = 15F;
-        [SerializeField] private float minimumX = -360F;
-        [SerializeField] private float maximumX = 360F;
         [SerializeField] private float minimumY = -60F;
         [SerializeField] private float maximumY = 60F;
         private float rotationY = 0F;
