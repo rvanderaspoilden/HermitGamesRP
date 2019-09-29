@@ -61,6 +61,16 @@ namespace com.hermitGames.rp
                 }
             }
 
+            if(Input.GetMouseButton(1)) {
+                this.networkAnimator.SetAnimation(new SetAnimationRequest("punchReady", VariableType.BOOL, bool.TrueString));
+            } else {
+                this.networkAnimator.SetAnimation(new SetAnimationRequest("punchReady", VariableType.BOOL, bool.FalseString));
+            }
+
+            if(Input.GetMouseButtonDown(0)) {
+                this.networkAnimator.SetAnimation(new SetAnimationRequest("punch", VariableType.TRIGGER, ""));
+            }
+
             moveDirection.y -= gravity * Time.deltaTime;
 
             characterController.Move(moveDirection * Time.deltaTime);
