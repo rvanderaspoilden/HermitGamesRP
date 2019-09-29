@@ -542,7 +542,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 3
-  jumpSpeed: 5
+  sprintAcceleratorCoef: 1.5
+  backwardDeceleratorCoef: 0.5
+  jumpSpeed: 6
   gravity: 20
   sensitivityX: 5
 --- !u!114 &2874623188543595746
@@ -1301,8 +1303,6 @@ MonoBehaviour:
   objectToSpawn: {fileID: 3357396233413960268, guid: f3bc23aea8992254790b2713d8ed7626,
     type: 3}
   sensitivityY: 5
-  minimumX: -360
-  maximumX: 360
   minimumY: -45
   maximumY: 60
 --- !u!1 &9188233461795769793

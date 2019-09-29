@@ -9,6 +9,8 @@ namespace com.hermitGames.rp
     public class Player : MonoBehaviour
     {
         [SerializeField] private float speed = 6.0f;
+        [SerializeField] private float sprintAcceleratorCoef = 1.5f;
+        [SerializeField] private float backwardDeceleratorCoef= 0.5f;
         [SerializeField] private float jumpSpeed = 8.0f;
         [SerializeField] private float gravity = 20.0f;
         [SerializeField] private float sensitivityX = 15;
@@ -17,9 +19,9 @@ namespace com.hermitGames.rp
 
         private CharacterController characterController;
 
-        private float forwardSpeed = 0f;
+        private bool isSprinting;
 
-        private float isSprinting = 0f;
+        private bool isWalkingBackward;
 
         private NetworkAnimator networkAnimator;
 
@@ -32,17 +34,31 @@ namespace com.hermitGames.rp
         // Update is called once per frame
         void Update() {
             if (characterController.isGrounded) {
-                this.isSprinting = Input.GetKey(KeyCode.LeftShift) ? 2f : 1f;
+                this.isSprinting = Input.GetKey(KeyCode.LeftShift) && Input.GetAxis("Vertical") > 0f;
+                this.isWalkingBackward = Input.GetAxis("Vertical") < 0;
 
                 moveDirection = new Vector3(Input.GetAxis("Horizontal"), 0.0f, Input.GetAxis("Vertical"));
                 moveDirection = this.transform.TransformDirection(moveDirection);
-                moveDirection *= speed * this.isSprinting;
+
+                if(this.isSprinting) {
+                    moveDirection *= (speed * this.sprintAcceleratorCoef);
+                } else if(this.isWalkingBackward) {
+                    moveDirection *= (speed * this.backwardDeceleratorCoef);
+                } else {
+                    moveDirection *= speed;
+                }
 
                 if (Input.GetButton("Jump")) {
                     moveDirection.y = jumpSpeed;
+                    this.networkAnimator.SetAnimation(new SetAnimationRequest("jump", VariableType.TRIGGER, ""));
                 }
 
-                this.networkAnimator.SetAnimation(new SetAnimationRequest("moveSpeed", VariableType.FLOAT, (Input.GetAxis("Vertical") * this.isSprinting).ToString()));
+                if (this.isSprinting) {
+                    this.networkAnimator.SetAnimation(new SetAnimationRequest("moveY", VariableType.FLOAT, "2"));
+                } else {
+                    this.networkAnimator.SetAnimation(new SetAnimationRequest("moveY", VariableType.FLOAT, Input.GetAxis("Vertical").ToString()));
+                    this.networkAnimator.SetAnimation(new SetAnimationRequest("moveX", VariableType.FLOAT, Input.GetAxis("Horizontal").ToString()));
+                }
             }
 
             moveDirection.y -= gravity * Time.deltaTime;
