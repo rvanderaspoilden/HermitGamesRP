@@ -39,6 +39,10 @@ namespace com.hermitGames.rp
             this.networkIdentities[id].GetComponent<NetworkTransform>().UpdateRotation(newPosition);
         }
 
+        public void EntityTalk(VoicePacket packet) {
+            this.networkIdentities[packet.entityId].GetComponent<NetworkVoice>().PlayVoiceSound(packet.data, packet.channels);
+        }
+
         public void CmdRegisterEntity(GameObject prefab, Vector3 position, Vector3 rotation) {
             Entity entity = new Entity();
             entity.type = prefab.GetComponent<NetworkIdentity>().GetEntityType();

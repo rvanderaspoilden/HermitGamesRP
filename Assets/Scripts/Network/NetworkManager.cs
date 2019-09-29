@@ -29,6 +29,7 @@ namespace com.hermitGames.rp
             this.socketIO.On("Packet::EntityCreated", this.EntityCreated);
             this.socketIO.On("Packet::EntityDestroyed", this.EntityDestroyed);
             this.socketIO.On("Packet::EntityDoAnimation", this.EntityDoAnimation);
+            this.socketIO.On("Packet::EntityTalk", this.EntityTalk);
         }
 
         void Awake() {
@@ -70,6 +71,11 @@ namespace com.hermitGames.rp
             this.localUser = null;
             this.entities = null;
             SceneManager.LoadScene("Launcher");
+        }
+
+        private void EntityTalk(SocketIOEvent e) {
+            VoicePacket packet = JsonUtility.FromJson<VoicePacket>(e.data.ToString());
+            GameManager.instance.EntityTalk(packet);
         }
 
         private void InitGame(SocketIOEvent e) {
