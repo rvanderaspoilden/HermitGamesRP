@@ -6,9 +6,10 @@ namespace com.hermitGames.rp
 {
     public class NetworkIdentity : MonoBehaviour
     {
-        [SerializeField] private string networkId; // equals to entityId server side
         [SerializeField] private EntityType type;
-        [SerializeField] private bool isLocal;
+
+        private string networkId; // equals to entityId server side
+        private bool isLocal;
 
         public void Setup(string id, bool isMine) {
             this.networkId = id;

@@ -12,8 +12,7 @@ namespace com.hermitGames.rp
         [SerializeField] private float sprintAcceleratorCoef = 1.5f;
         [SerializeField] private float backwardDeceleratorCoef= 0.5f;
         [SerializeField] private float jumpSpeed = 8.0f;
-        [SerializeField] private float gravity = 20.0f;
-        [SerializeField] private float sensitivityX = 15;
+        [SerializeField] private float gravity = 20.0f;   
 
         private Vector3 moveDirection = Vector3.zero;
 
@@ -74,8 +73,6 @@ namespace com.hermitGames.rp
             moveDirection.y -= gravity * Time.deltaTime;
 
             characterController.Move(moveDirection * Time.deltaTime);
-
-            transform.Rotate(0, Input.GetAxis("Mouse X") * sensitivityX, 0);
         }
     }
 }

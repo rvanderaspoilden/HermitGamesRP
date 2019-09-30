@@ -7,12 +7,12 @@ namespace com.hermitGames.rp
     [RequireComponent(typeof(NetworkIdentity))]
     public class NetworkVoice : MonoBehaviour
     {
-        [SerializeField] private static int FREQUENCY = 8000;
-        [SerializeField] private int lastSample = 0;
-        [SerializeField] private bool notRecording;
-        [SerializeField] private AudioClip sendingClip;
-        [SerializeField] private bool sending;
-        [SerializeField] private new AudioSource audio;
+        private static int FREQUENCY = 8000;
+        private int lastSample = 0;
+        private bool notRecording;
+        private AudioClip sendingClip;
+        private bool sending;
+        private new AudioSource audio;
 
         private bool isTalking;
 

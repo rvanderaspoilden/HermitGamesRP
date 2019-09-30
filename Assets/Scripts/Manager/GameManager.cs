@@ -87,10 +87,10 @@ namespace com.hermitGames.rp
 
             if (!isMine) {
                 player.GetComponent<Player>().enabled = false;
+                player.GetComponent<PlayerRotation>().enabled = false;
                 player.GetComponent<CharacterController>().enabled = false;
                 player.GetComponentInChildren<Camera>().enabled = false;
                 player.GetComponentInChildren<AudioListener>().enabled = false;
-                player.GetComponentInChildren<HeadRotation>().enabled = false;
             }
 
             return player;
