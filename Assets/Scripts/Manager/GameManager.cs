@@ -43,6 +43,10 @@ namespace com.hermitGames.rp
             this.networkIdentities[packet.entityId].GetComponent<NetworkVoice>().PlayVoiceSound(packet.data, packet.channels);
         }
 
+        public void EntityStateChanged(EntityState state) {
+            this.networkIdentities[state.entityId].GetComponent<NetworkState>().UpdateState(state);
+        }
+
         public void CmdRegisterEntity(GameObject prefab, Vector3 position, Vector3 rotation) {
             Entity entity = new Entity();
             entity.type = prefab.GetComponent<NetworkIdentity>().GetEntityType();
@@ -87,7 +91,6 @@ namespace com.hermitGames.rp
 
             if (!isMine) {
                 player.GetComponent<Player>().enabled = false;
-                player.GetComponent<PlayerRotation>().enabled = false;
                 player.GetComponent<CharacterController>().enabled = false;
                 player.GetComponentInChildren<Camera>().enabled = false;
                 player.GetComponentInChildren<AudioListener>().enabled = false;

@@ -4,6 +4,7 @@ using UnityEngine;
 using SocketIO;
 using UnityEngine.SceneManagement;
 using System.Linq;
+using Newtonsoft.Json;
 
 namespace com.hermitGames.rp
 {
@@ -30,7 +31,9 @@ namespace com.hermitGames.rp
             this.socketIO.On("Packet::EntityDestroyed", this.EntityDestroyed);
             this.socketIO.On("Packet::EntityDoAnimation", this.EntityDoAnimation);
             this.socketIO.On("Packet::EntityTalk", this.EntityTalk);
+            this.socketIO.On("Packet::EntityStateChanged", this.EntityStateChanged);
         }
+       
 
         void Awake() {
             if (instance == null) {
@@ -76,6 +79,11 @@ namespace com.hermitGames.rp
         private void EntityTalk(SocketIOEvent e) {
             VoicePacket packet = JsonUtility.FromJson<VoicePacket>(e.data.ToString());
             GameManager.instance.EntityTalk(packet);
+        }
+
+        private void EntityStateChanged(SocketIOEvent e) {
+            EntityState state = JsonConvert.DeserializeObject<EntityState>(e.data.ToString());
+            GameManager.instance.EntityStateChanged(state);
         }
 
         private void InitGame(SocketIOEvent e) {

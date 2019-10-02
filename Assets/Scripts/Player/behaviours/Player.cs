@@ -20,8 +20,8 @@ namespace com.hermitGames.rp
         private Vector3 moveDirection = Vector3.zero;
 
         private CharacterController characterController;
-
         private NetworkAnimator networkAnimator;
+        private NetworkState networkState;
 
         private float previousMoveX = 0f;
         private float previousMoveY = 0f;
