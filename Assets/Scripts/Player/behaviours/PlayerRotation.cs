@@ -5,6 +5,9 @@ using UnityEngine;
 namespace com.hermitGames.rp
 {
     [RequireComponent(typeof(Player))]
+    [RequireComponent(typeof(NetworkState))]
+    [RequireComponent(typeof(NetworkIdentity))]
+
     public class PlayerRotation : MonoBehaviour
     {
         [SerializeField] private Transform headBone;
@@ -16,18 +19,31 @@ namespace com.hermitGames.rp
         [SerializeField] private float maximumY = 60f;
 
         private float rotationY = 0f;
+        private float previousRotationY = 0f;
 
         private Transform cameraTransform;
+        private NetworkState networkState;
+        private NetworkIdentity networkIdentity;
 
         // Start is called before the first frame update
         void Start() {
+            this.networkState = GetComponent<NetworkState>();
+            this.networkIdentity = GetComponent<NetworkIdentity>();
             this.cameraTransform = GetComponentInChildren<Camera>().transform;
+
+            this.networkState.OnStateChanged += UpdateState;
         }
 
         // Update is called once per frame
         void Update() {
-            this.ManageVerticalRotation();
-            this.ManageHorizontalRotation();
+            if(this.networkIdentity.IsMine()) {
+                this.ManageVerticalRotation();
+                this.ManageHorizontalRotation();
+            }
+        }
+
+        public void UpdateState(Dictionary<string, string> state) {
+            float.TryParse(state["rotationY"], out this.rotationY);
         }
 
         private void LateUpdate() {
@@ -42,6 +58,15 @@ namespace com.hermitGames.rp
         private void ManageVerticalRotation() {
             rotationY += Input.GetAxis("Mouse Y") * sensitivityY;
             rotationY = Mathf.Clamp(rotationY, minimumY, maximumY);
+
+            if(Mathf.Abs(previousRotationY - rotationY) >= 1f) {
+                Dictionary<string, string> data = new Dictionary<string, string>();
+                data.Add("rotationY", rotationY.ToString());
+                data.Add("rotationX", rotationY.ToString());
+
+                this.networkState.Synchronize(data);
+                this.previousRotationY = rotationY;
+            }
         }
     }
 }
