@@ -11,6 +11,8 @@ namespace com.hermitGames.rp
 
         private Dictionary<string, GameObject> prefabDatabase = new Dictionary<string, GameObject>();
 
+        public bool debug;
+
         public static GameManager instance;
 
         // Start is called before the first frame update
