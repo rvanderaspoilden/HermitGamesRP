@@ -32,7 +32,7 @@ namespace com.hermitGames.rp
                 }
 
                 if (this.syncRotation) {
-                    if (Quaternion.Angle(this.oldRotation, this.transform.rotation) >= 0.01f) {
+                    if (Quaternion.Angle(this.oldRotation, this.transform.rotation) >= 1f) {
                         this.oldRotation = this.transform.rotation;
                         this.SyncronizeRotation();
                     }

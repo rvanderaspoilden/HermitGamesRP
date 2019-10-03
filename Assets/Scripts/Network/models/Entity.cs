@@ -13,6 +13,8 @@ namespace com.hermitGames.rp
         public string prefabName;
         public Vector3Json position;
         public Vector3Json rotation;
+
+        [SerializeField]
         public Dictionary<string, string> state;
     }
 
