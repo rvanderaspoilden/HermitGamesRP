@@ -33,7 +33,7 @@ namespace com.hermitGames.rp
             this.socketIO.On("Packet::EntityTalk", this.EntityTalk);
             this.socketIO.On("Packet::EntityStateChanged", this.EntityStateChanged);
         }
-       
+
 
         void Awake() {
             if (instance == null) {
@@ -132,5 +132,4 @@ namespace com.hermitGames.rp
             GameManager.instance.DestroyEntity(user);
         }
     }
-
 }

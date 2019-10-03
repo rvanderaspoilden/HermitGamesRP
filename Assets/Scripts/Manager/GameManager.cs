@@ -44,7 +44,7 @@ namespace com.hermitGames.rp
         }
 
         public void EntityStateChanged(EntityState state) {
-            this.networkIdentities[state.entityId].GetComponent<NetworkState>().UpdateState(state);
+            this.networkIdentities[state.entityId].GetComponent<NetworkState>().UpdateState(state.entityState);
         }
 
         public void CmdRegisterEntity(GameObject prefab, Vector3 position, Vector3 rotation) {
@@ -72,7 +72,7 @@ namespace com.hermitGames.rp
             float.TryParse(entity.position.y, out position.y);
             float.TryParse(entity.position.z, out position.z);
 
-            Vector3 rotation;
+            Vector3 rotation; 
             float.TryParse(entity.rotation.x, out rotation.x);
             float.TryParse(entity.rotation.y, out rotation.y);
             float.TryParse(entity.rotation.z, out rotation.z);
@@ -82,6 +82,11 @@ namespace com.hermitGames.rp
             NetworkIdentity networkIdentity = entityObject.GetComponent<NetworkIdentity>();
             networkIdentity.Setup(entity.id, isMine);
             this.networkIdentities.Add(entity.id, networkIdentity);
+
+            if(entity.id != NetworkManager.instance.GetLocalUser().id) {
+                // Get current state => like it because can't deserialize state in user from networkManager
+                NetworkManager.instance.GetSocket().Emit("Packet::GetEntityState", JSONObject.Create(JsonUtility.ToJson(entity)));
+            }
 
             return entityObject;
         }

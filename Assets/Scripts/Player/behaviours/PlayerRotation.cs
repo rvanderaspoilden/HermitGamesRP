@@ -36,7 +36,7 @@ namespace com.hermitGames.rp
 
         // Update is called once per frame
         void Update() {
-            if(this.networkIdentity.IsMine()) {
+            if (this.networkIdentity.IsMine()) {
                 this.ManageVerticalRotation();
                 this.ManageHorizontalRotation();
             }
@@ -59,7 +59,7 @@ namespace com.hermitGames.rp
             rotationY += Input.GetAxis("Mouse Y") * sensitivityY;
             rotationY = Mathf.Clamp(rotationY, minimumY, maximumY);
 
-            if(Mathf.Abs(previousRotationY - rotationY) >= 1f) {
+            if (Mathf.Abs(previousRotationY - rotationY) >= 1f) {
                 Dictionary<string, string> data = new Dictionary<string, string>();
                 data.Add("rotationY", rotationY.ToString());
                 data.Add("rotationX", rotationY.ToString());

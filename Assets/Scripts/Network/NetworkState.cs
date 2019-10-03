@@ -19,8 +19,8 @@ namespace com.hermitGames.rp
             this.networkIdentity = GetComponent<NetworkIdentity>();
         }
 
-        public void UpdateState(EntityState data) {
-            this.state = data.entityState;
+        public void UpdateState(Dictionary<string, string> data) {
+            this.state = data;
             OnStateChanged(this.state);
         }
 
