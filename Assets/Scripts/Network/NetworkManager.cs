@@ -44,11 +44,6 @@ namespace com.hermitGames.rp
             }
         }
 
-        // Update is called once per frame
-        void Update() {
-
-        }
-
         public User GetLocalUser() {
             return this.localUser;
         }

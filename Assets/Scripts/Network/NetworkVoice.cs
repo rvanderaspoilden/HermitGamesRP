@@ -33,38 +33,39 @@ namespace com.hermitGames.rp
         }
 
         void FixedUpdate() {
-            if (this.isTalking) {
-                if (notRecording) {
-                    notRecording = false;
-                    sendingClip = Microphone.Start(null, true, 10, FREQUENCY);
-                    sending = true;
-                } else if (sending) {
-                    int pos = Microphone.GetPosition(null);
-                    int diff = pos - lastSample;
+            if (this.identity.IsMine()) {
+                if (this.isTalking) {
+                    if (notRecording) {
+                        notRecording = false;
+                        sendingClip = Microphone.Start(null, true, 10, FREQUENCY);
+                        sending = true;
+                    } else if (sending) {
+                        int pos = Microphone.GetPosition(null);
+                        int diff = pos - lastSample;
 
-                    if (diff > 0) {
-                        float[] samples = new float[diff * sendingClip.channels];
-                        sendingClip.GetData(samples, lastSample);
+                        if (diff > 1000) {
+                            float[] samples = new float[diff * sendingClip.channels];
+                            sendingClip.GetData(samples, lastSample);
 
-                        byte[] ba = ToByteArray(samples);
+                            byte[] ba = ToByteArray(samples);
 
-                        VoicePacket packet = new VoicePacket(ba, sendingClip.channels, this.identity.GetNetworkID());
+                            VoicePacket packet = new VoicePacket(ba, sendingClip.channels, this.identity.GetNetworkID());
 
-                        NetworkManager.instance.GetSocket().Emit("Packet::Voice", JSONObject.Create(JsonUtility.ToJson(packet)));
+                            NetworkManager.instance.GetSocket().Emit("Packet::Voice", JSONObject.Create(JsonUtility.ToJson(packet)));
 
+                            lastSample = pos;
+                        }
                     }
-                    lastSample = pos;
-                }
-            } else {
-                if (sending) {
-                    this.sending = false;
-                    Microphone.End(null);
-                    notRecording = true;
-                    sendingClip = null;
-                    lastSample = 0;
+                } else {
+                    if (sending) {
+                        this.sending = false;
+                        Microphone.End(null);
+                        notRecording = true;
+                        sendingClip = null;
+                        lastSample = 0;
+                    }
                 }
             }
-
         }
 
         public void PlayVoiceSound(byte[] ba, int chan) {
@@ -78,13 +79,8 @@ namespace com.hermitGames.rp
         public byte[] ToByteArray(float[] floatArray) {
             byte[] byteArray = new byte[floatArray.Length * 4];
             int pos = 0;
-            /*foreach (float f in floatArray) {
-                byte[] data = System.BitConverter.GetBytes(f);
-                System.Array.Copy(data, 0, byteArray, pos, 4);
-                pos += 4;
-            }*/
 
-            for(int i = 0; i < floatArray.Length; i++) {
+            for (int i = 0; i < floatArray.Length; i++) {
                 byte[] data = System.BitConverter.GetBytes(floatArray[i]);
                 System.Array.Copy(data, 0, byteArray, pos, 4);
                 pos += 4;

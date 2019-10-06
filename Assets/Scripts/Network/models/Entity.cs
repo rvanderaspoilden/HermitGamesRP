@@ -15,6 +15,9 @@ namespace com.hermitGames.rp
         public Vector3Json rotation;
 
         [SerializeField]
+        public SetAnimationRequest animation;
+
+        [SerializeField]
         public Dictionary<string, string> state;
     }
 
