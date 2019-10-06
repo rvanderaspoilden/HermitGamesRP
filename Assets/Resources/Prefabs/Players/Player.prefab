@@ -416,7 +416,7 @@ CapsuleCollider:
   m_Radius: 0.19
   m_Height: 1.78
   m_Direction: 1
-  m_Center: {x: 0, y: 0.89, z: 0}
+  m_Center: {x: 0, y: 0.95, z: 0}
 --- !u!143 &6901809149428457225
 CharacterController:
   m_ObjectHideFlags: 0
@@ -434,7 +434,7 @@ CharacterController:
   m_StepOffset: 0.3
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
-  m_Center: {x: 0, y: 0.89, z: 0}
+  m_Center: {x: 0, y: 0.95, z: 0}
 --- !u!114 &6901809149428457224
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -532,7 +532,7 @@ MonoBehaviour:
   headBone: {fileID: 8553931600783004396}
   sensitivityX: 5
   sensitivityY: 5
-  minimumY: -55
+  minimumY: -60
   maximumY: 60
 --- !u!82 &6919699760255497970
 AudioSource:
@@ -554,8 +554,8 @@ AudioSource:
   SpatializePostEffects: 0
   Priority: 166
   DopplerLevel: 1
-  MinDistance: 0.1
-  MaxDistance: 8
+  MinDistance: 2.38
+  MaxDistance: 9.27
   Pan2D: 0
   rolloffMode: 0
   BypassEffects: 0

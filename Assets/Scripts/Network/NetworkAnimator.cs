@@ -19,10 +19,6 @@ namespace com.hermitGames.rp
             this.animator = GetComponent<Animator>();
         }
 
-        // Update is called once per frame
-        void Update() {
-        }
-
         public void SetAnimation(SetAnimationRequest req) {
             switch(req.variableType) {
                 case VariableType.BOOL:

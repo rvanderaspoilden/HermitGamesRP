@@ -36,7 +36,7 @@ namespace com.hermitGames.rp
 
         // Update is called once per frame
         void Update() {
-            if (this.networkIdentity.IsMine() || GameManager.instance.debug) {
+            if (this.networkIdentity.IsMine()) {
                 this.ManageVerticalRotation();
                 this.ManageHorizontalRotation();
             }
