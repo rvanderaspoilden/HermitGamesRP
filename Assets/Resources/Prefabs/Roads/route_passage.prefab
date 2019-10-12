@@ -55,6 +55,7 @@ GameObject:
   - component: {fileID: 340583829351076129}
   - component: {fileID: 7895493357420729200}
   - component: {fileID: 1445628882000565238}
+  - component: {fileID: 5956689109512444147}
   m_Layer: 0
   m_Name: route_passage
   m_TagString: Untagged
@@ -125,6 +126,19 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!114 &5956689109512444147
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7009579388892954421}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 06cb00dd77b490441ad8d31d47d29442, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  type: 1
 --- !u!1 &7689831963180504088
 GameObject:
   m_ObjectHideFlags: 0

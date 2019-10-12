@@ -15,15 +15,50 @@ namespace com.hermitGames.rp
 
         private Dictionary<string, GameObject> prefabDatabase = new Dictionary<string, GameObject>();
 
+        private CameraBuilding cameraBuilding;
+        private bool isBuildingMode;
+
+        private GameObject localPlayer;
+
         public static GameManager instance;
 
         // Start is called before the first frame update
         void Start() {
+            this.cameraBuilding = GameObject.FindObjectOfType<CameraBuilding>();
+            this.cameraBuilding.gameObject.SetActive(false);
+
             instance = this;
 
             this.SetPrefabDatabase();
 
             this.InitEntities();
+        }
+
+        private void Update() {
+            if (Input.GetKeyDown(KeyCode.B)) {
+                this.isBuildingMode = !this.isBuildingMode;
+
+                if (this.isBuildingMode) {
+                    this.SwitchToBuildMode();
+                } else {
+                    this.SwitchToPlayerMode();
+                }
+            }
+        }
+
+        public void SwitchToBuildMode() {
+            this.cameraBuilding.gameObject.SetActive(true);
+            this.cameraBuilding.transform.position = new Vector3(this.localPlayer.transform.position.x, 20, this.localPlayer.transform.position.z);
+            this.localPlayer.GetComponentInChildren<Camera>().enabled = false;
+            this.localPlayer.GetComponent<Player>().enabled = false;
+            this.localPlayer.GetComponent<PlayerRotation>().enabled = false;
+        }
+
+        public void SwitchToPlayerMode() {
+            this.localPlayer.GetComponentInChildren<Camera>().enabled = true;
+            this.localPlayer.GetComponent<Player>().enabled = true;
+            this.localPlayer.GetComponent<PlayerRotation>().enabled = true;
+            this.cameraBuilding.gameObject.SetActive(false);
         }
 
         public void EntityMoved(string id, Vector3 newPosition) {
@@ -82,15 +117,31 @@ namespace com.hermitGames.rp
             networkIdentity.Setup(entity.id, isMine);
             this.networkIdentities.Add(entity.id, networkIdentity);
 
-            this.networkAnimators.Add(entity.id, entityObject.GetComponent<NetworkAnimator>());
-            this.networkTransforms.Add(entity.id, entityObject.GetComponent<NetworkTransform>());
-            this.networkStates.Add(entity.id, entityObject.GetComponent<NetworkState>());
+            NetworkAnimator networkAnimator = entityObject.GetComponent<NetworkAnimator>();
+
+            if (networkAnimator != null) {
+                this.networkAnimators.Add(entity.id, networkAnimator);
+            }
+
+            NetworkTransform networkTransform = entityObject.GetComponent<NetworkTransform>();
+
+            if (networkTransform != null) {
+                this.networkTransforms.Add(entity.id, networkTransform);
+            }
+
+            NetworkState networkState = entityObject.GetComponent<NetworkState>();
+
+            if (networkState != null) {
+                this.networkStates.Add(entity.id, networkState);
+            }
 
             if (entity.id != NetworkManager.instance.GetLocalUser().id) {
                 // Get current state => like it because can't deserialize state in user from networkManager
-                NetworkManager.instance.GetSocket().Emit("Packet::GetEntityState", JSONObject.Create(JsonUtility.ToJson(entity)));
+                if (networkState != null) {
+                    NetworkManager.instance.GetSocket().Emit("Packet::GetEntityState", JSONObject.Create(JsonUtility.ToJson(entity)));
+                }
 
-                if (entity.animation != null && entity.animation.variableName != null) {
+                if (networkAnimator != null && entity.animation != null && entity.animation.variableName != null) {
                     StartCoroutine(this.PlayAnimationLater(entity));
                 }
             }
@@ -113,6 +164,8 @@ namespace com.hermitGames.rp
                 player.GetComponent<CharacterController>().enabled = false;
                 player.GetComponentInChildren<Camera>().enabled = false;
                 player.GetComponentInChildren<AudioListener>().enabled = false;
+            } else {
+                this.localPlayer = player;
             }
 
             return player;
@@ -124,7 +177,7 @@ namespace com.hermitGames.rp
             Destroy(this.networkTransforms[entity.id].gameObject);
             Destroy(this.networkStates[entity.id].gameObject);
 
-            if(entity.type == EntityType.USER)
+            if (entity.type == EntityType.USER)
                 Destroy(this.networkVoices[entity.id].gameObject);
         }
 
