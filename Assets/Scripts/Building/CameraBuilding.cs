@@ -86,16 +86,20 @@ namespace com.hermitGames.rp
             // Raycast only on terrain
             if (Physics.Raycast(ray, out hit, 100f)) {
                 if (this.selectedPrefab) {
-                    this.selectedPrefab.SetActive(true);
-                    this.selectedPrefab.transform.position = this.GetNearestPoint(hit.point);
+                    if(hit.collider.tag == "Terrain" || (hit.collider.transform.parent && hit.collider.transform.parent.gameObject == this.selectedPrefab)) {
+                        this.selectedPrefab.SetActive(true);
+                        this.selectedPrefab.transform.position = this.GetNearestPoint(hit.point);
 
-                    if (Input.GetMouseButtonDown(0)) {
-                        List<NetworkIdentity> networkIdentities = new List<NetworkIdentity>(this.selectedPrefab.GetComponentsInChildren<NetworkIdentity>());
-                        
-                        networkIdentities.ForEach((NetworkIdentity identity) => {
-                            GameManager.instance.CmdRegisterEntity(GameManager.prefabDatabase[identity.name], identity.transform.position, identity.transform.rotation.eulerAngles);
-                        });
-                    }
+                        if (Input.GetMouseButtonDown(0)) {
+                            List<NetworkIdentity> networkIdentities = new List<NetworkIdentity>(this.selectedPrefab.GetComponentsInChildren<NetworkIdentity>());
+
+                            networkIdentities.ForEach((NetworkIdentity identity) => {
+                                GameManager.instance.CmdRegisterEntity(GameManager.prefabDatabase[identity.name], identity.transform.position, identity.transform.rotation.eulerAngles);
+                            });
+                        }
+                    } else {
+                        this.selectedPrefab.SetActive(false);
+                    }               
                 }
 
                 if (Input.GetKeyDown(KeyCode.R) && !this.selectedPrefab) {
