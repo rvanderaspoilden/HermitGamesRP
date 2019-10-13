@@ -13,10 +13,12 @@ namespace com.hermitGames.rp
         private Dictionary<string, NetworkState> networkStates = new Dictionary<string, NetworkState>();
         private Dictionary<string, NetworkVoice> networkVoices = new Dictionary<string, NetworkVoice>();
 
-        private Dictionary<string, GameObject> prefabDatabase = new Dictionary<string, GameObject>();
+        public static Dictionary<string, GameObject> prefabDatabase = new Dictionary<string, GameObject>();
 
         private CameraBuilding cameraBuilding;
         private bool isBuildingMode;
+
+        private BuildUIManager buildUIManager;
 
         private GameObject localPlayer;
 
@@ -27,9 +29,13 @@ namespace com.hermitGames.rp
             this.cameraBuilding = GameObject.FindObjectOfType<CameraBuilding>();
             this.cameraBuilding.gameObject.SetActive(false);
 
-            instance = this;
-
             this.SetPrefabDatabase();
+
+            this.buildUIManager = GameObject.FindObjectOfType<BuildUIManager>();
+            this.buildUIManager.Init();
+            this.buildUIManager.gameObject.SetActive(false);
+
+            instance = this;
 
             this.InitEntities();
         }
@@ -47,6 +53,7 @@ namespace com.hermitGames.rp
         }
 
         public void SwitchToBuildMode() {
+            this.buildUIManager.gameObject.SetActive(true);
             this.cameraBuilding.gameObject.SetActive(true);
             this.cameraBuilding.transform.position = new Vector3(this.localPlayer.transform.position.x, 20, this.localPlayer.transform.position.z);
             this.localPlayer.GetComponentInChildren<Camera>().enabled = false;
@@ -59,6 +66,7 @@ namespace com.hermitGames.rp
             this.localPlayer.GetComponent<Player>().enabled = true;
             this.localPlayer.GetComponent<PlayerRotation>().enabled = true;
             this.cameraBuilding.gameObject.SetActive(false);
+            this.buildUIManager.gameObject.SetActive(false);
         }
 
         public void EntityMoved(string id, Vector3 newPosition) {
@@ -111,7 +119,7 @@ namespace com.hermitGames.rp
             float.TryParse(entity.rotation.y, out rotation.y);
             float.TryParse(entity.rotation.z, out rotation.z);
 
-            GameObject entityObject = Instantiate(this.prefabDatabase[entity.prefabName], position, Quaternion.Euler(rotation));
+            GameObject entityObject = Instantiate(prefabDatabase[entity.prefabName], position, Quaternion.Euler(rotation));
 
             NetworkIdentity networkIdentity = entityObject.GetComponent<NetworkIdentity>();
             networkIdentity.Setup(entity.id, isMine);
@@ -182,7 +190,9 @@ namespace com.hermitGames.rp
         }
 
         private void SetPrefabDatabase() {
-            this.prefabDatabase = new List<GameObject>(Resources.LoadAll<GameObject>("Prefabs")).ToDictionary((GameObject prefab) => prefab.name);
+            prefabDatabase = new List<GameObject>(Resources.LoadAll<GameObject>("Prefabs"))
+                .FindAll((GameObject obj) => obj.GetComponentInChildren<NetworkIdentity>())
+                .ToDictionary((GameObject prefab) => prefab.name);
         }
 
         private void InitEntities() {

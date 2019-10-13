@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 namespace com.hermitGames.rp
 {
@@ -21,15 +22,15 @@ namespace com.hermitGames.rp
         private GameObject selectedPrefab;
         private PreviewState previewState;
 
+        public static CameraBuilding instance;
+
         // Start is called before the first frame update
         void Start() {
-            this.camera = GetComponent<Camera>();  
+            this.camera = GetComponent<Camera>();
+            instance = this;
         }
 
         private void OnEnable() {
-            this.selectedPrefab = Instantiate(this.prefab);
-            this.selectedPrefab.AddComponent<Preview>();
-            this.selectedPrefab.SetActive(false);
             Preview.statusChangedEvent += this.PreviewStateChanged;
         }
 
@@ -43,11 +44,37 @@ namespace com.hermitGames.rp
             this.previewState = state;
         }
 
+        public void SetPrefab(string name) {
+            GameObject prefabFound = GameManager.prefabDatabase[name];
+
+            if (prefabFound) {
+                Destroy(this.selectedPrefab);
+
+                this.prefab = prefabFound;
+                this.selectedPrefab = Instantiate(this.prefab);
+                this.selectedPrefab.name = this.prefab.name;
+                //this.selectedPrefab.AddComponent<Preview>();
+            } else {
+                Debug.LogErrorFormat("Prefab : {0} not found in database", name);
+            }
+        }
+
         // Update is called once per frame
         void Update() {
+            if (EventSystem.current.IsPointerOverGameObject()) {
+                if (this.selectedPrefab) {
+                    this.selectedPrefab.SetActive(false);
+                }
+                return;
+            }
+
             this.moveX = Input.GetAxis("Horizontal");
             this.moveY = Input.GetAxis("Vertical");
             this.moveZ = Input.GetAxis("Mouse ScrollWheel");
+
+            if (Input.GetKeyDown(KeyCode.Escape)) {
+                Destroy(this.selectedPrefab);
+            }
 
             if (Input.GetMouseButtonDown(1)) {
                 this.selectedPrefab.transform.Rotate(new Vector3(0, 90f, 0));
@@ -63,20 +90,36 @@ namespace com.hermitGames.rp
                     this.selectedPrefab.transform.position = this.GetNearestPoint(hit.point);
 
                     if (Input.GetMouseButtonDown(0)) {
-                        GameManager.instance.CmdRegisterEntity(this.prefab, this.selectedPrefab.transform.position, this.selectedPrefab.transform.rotation.eulerAngles);
+                        List<NetworkIdentity> networkIdentities = new List<NetworkIdentity>(this.selectedPrefab.GetComponentsInChildren<NetworkIdentity>());
+                        
+                        networkIdentities.ForEach((NetworkIdentity identity) => {
+                            GameManager.instance.CmdRegisterEntity(GameManager.prefabDatabase[identity.name], identity.transform.position, identity.transform.rotation.eulerAngles);
+                        });
                     }
                 }
-            } else if (this.selectedPrefab) {
-                this.selectedPrefab.SetActive(false);
+
+                if (Input.GetKeyDown(KeyCode.R) && !this.selectedPrefab) {
+                    NetworkIdentity networkIdentity = hit.transform.GetComponentInParent<NetworkIdentity>();
+
+                    if (networkIdentity) {
+                        GameManager.instance.CmdDestroyEntity(networkIdentity.gameObject);
+                    } else {
+                        Debug.LogError("No network identity found !");
+                    }
+                }
             }
         }
 
         private void FixedUpdate() {
+            if (EventSystem.current.IsPointerOverGameObject())
+                return;
+
             this.transform.Translate(this.moveX * this.moveSpeed * Time.deltaTime, this.moveY * this.moveSpeed * Time.deltaTime, this.moveZ * this.zoomSpeed * Time.deltaTime);
         }
 
         private Vector3 GetNearestPoint(Vector3 pos) {
             return new Vector3(Mathf.RoundToInt(pos.x / this.unitCellSize) * this.unitCellSize, 0, Mathf.RoundToInt(pos.z / this.unitCellSize) * this.unitCellSize);
         }
+
     }
 }
