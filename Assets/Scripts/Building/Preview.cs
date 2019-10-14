@@ -11,13 +11,10 @@ namespace com.hermitGames.rp
 
         private Color virtualColorGreen = new Color(0, 1, 0, 0.4f);
         private Color virtualColorRed = new Color(1, 0, 0, 0.4f);
-        private new Renderer renderer;
         private PreviewState state;
 
         // Start is called before the first frame update
         void Start() {
-            this.renderer = GetComponent<Renderer>();
-
             Rigidbody rigidbody = GetComponent<Rigidbody>();
             if (rigidbody == null) {
                 rigidbody = this.gameObject.AddComponent<Rigidbody>();
@@ -26,28 +23,31 @@ namespace com.hermitGames.rp
             rigidbody.useGravity = false;
             rigidbody.isKinematic = true;
 
-            this.renderer.material.color = this.virtualColorGreen;
-
             foreach (Collider coll in GetComponentsInChildren<Collider>()) {
-                coll.isTrigger = true;
+                coll.enabled = false;
+            }
+
+            foreach (Renderer renderer in GetComponentsInChildren<Renderer>()) {
+                renderer.material.color = this.virtualColorGreen;
             }
         }
 
-        private void OnTriggerStay(Collider other) {
-            if (other.gameObject.name != "Terrain") {
-                if (this.state == PreviewState.VALID) {
-                    this.state = PreviewState.NOT_VALID;
-                    statusChangedEvent(this.state);
-                    this.renderer.material.color = this.virtualColorRed;
-                }
+        private void FixedUpdate() {
+            RaycastHit hit;
+            if (Physics.BoxCast(this.transform.position, transform.localScale, transform.forward, out hit, transform.rotation, 10f)) {
+                Debug.Log("Collision forward");
             }
-        }
 
-        private void OnTriggerExit(Collider other) {
-            if (state == PreviewState.NOT_VALID) {
-                this.state = PreviewState.VALID;
-                statusChangedEvent(this.state);
-                this.renderer.material.color = this.virtualColorGreen;
+            if (Physics.BoxCast(this.transform.position, transform.localScale, -transform.forward, out hit, transform.rotation, 10f)) {
+                Debug.Log("Collision backward");
+            }
+
+            if (Physics.BoxCast(this.transform.position, transform.localScale, Vector3.left, out hit, transform.rotation, 10f)) {
+                Debug.Log("Collision left");
+            }
+
+            if (Physics.BoxCast(this.transform.position, transform.localScale, Vector3.right, out hit, transform.rotation, 10f)) {
+                Debug.Log("Collision right");
             }
         }
     }

@@ -53,7 +53,7 @@ namespace com.hermitGames.rp
                 this.prefab = prefabFound;
                 this.selectedPrefab = Instantiate(this.prefab);
                 this.selectedPrefab.name = this.prefab.name;
-                //this.selectedPrefab.AddComponent<Preview>();
+                this.selectedPrefab.AddComponent<Preview>();
             } else {
                 Debug.LogErrorFormat("Prefab : {0} not found in database", name);
             }
@@ -92,6 +92,8 @@ namespace com.hermitGames.rp
 
                         if (Input.GetMouseButtonDown(0)) {
                             List<NetworkIdentity> networkIdentities = new List<NetworkIdentity>(this.selectedPrefab.GetComponentsInChildren<NetworkIdentity>());
+
+                            Debug.Log(networkIdentities.Count);
 
                             networkIdentities.ForEach((NetworkIdentity identity) => {
                                 GameManager.instance.CmdRegisterEntity(GameManager.prefabDatabase[identity.name], identity.transform.position, identity.transform.rotation.eulerAngles);
