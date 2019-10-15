@@ -731,5 +731,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4266109610664451984, guid: 79f69a1f134474ddcb9fd49368c1f224,
+        type: 3}
+      propertyPath: url
+      value: ws://127.0.0.1:8080/socket.io/?EIO=4&transport=websocket
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 79f69a1f134474ddcb9fd49368c1f224, type: 3}
