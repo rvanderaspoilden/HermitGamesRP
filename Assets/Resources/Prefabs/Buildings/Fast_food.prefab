@@ -296,7 +296,7 @@ PrefabInstance:
     - target: {fileID: 2498934889603337951, guid: ece72bd499fe9ac4c9bcda98278769f6,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2498934889603337951, guid: ece72bd499fe9ac4c9bcda98278769f6,
         type: 3}
@@ -306,7 +306,7 @@ PrefabInstance:
     - target: {fileID: 2498934889603337951, guid: ece72bd499fe9ac4c9bcda98278769f6,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2498934889603337951, guid: ece72bd499fe9ac4c9bcda98278769f6,
         type: 3}
@@ -671,17 +671,17 @@ PrefabInstance:
     - target: {fileID: 2498934889603337951, guid: ece72bd499fe9ac4c9bcda98278769f6,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2498934889603337951, guid: ece72bd499fe9ac4c9bcda98278769f6,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2498934889603337951, guid: ece72bd499fe9ac4c9bcda98278769f6,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2498934889603337951, guid: ece72bd499fe9ac4c9bcda98278769f6,
         type: 3}
@@ -728,6 +728,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2126611160720174356}
     m_Modifications:
+    - target: {fileID: 2464811109047973299, guid: 3fdca9bd3a5a5a44ca806f95f0f0f153,
+        type: 3}
+      propertyPath: m_Name
+      value: Fast_food_structure
+      objectReference: {fileID: 0}
     - target: {fileID: 2582407001873704963, guid: 3fdca9bd3a5a5a44ca806f95f0f0f153,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -782,11 +787,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2464811109047973299, guid: 3fdca9bd3a5a5a44ca806f95f0f0f153,
-        type: 3}
-      propertyPath: m_Name
-      value: Fast_food_structure
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3fdca9bd3a5a5a44ca806f95f0f0f153, type: 3}
