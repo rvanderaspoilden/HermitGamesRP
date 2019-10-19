@@ -360,6 +360,7 @@ GameObject:
   - component: {fileID: 7831726496417064660}
   - component: {fileID: 6901809149428457221}
   - component: {fileID: 6677682534184433685}
+  - component: {fileID: 3014226693452692709}
   - component: {fileID: 6919699760255497970}
   m_Layer: 0
   m_Name: Player
@@ -534,6 +535,18 @@ MonoBehaviour:
   sensitivityY: 5
   minimumY: -60
   maximumY: 60
+--- !u!114 &3014226693452692709
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3236341887719048712}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbc273e9e61a022458e88ba0b1f4397c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!82 &6919699760255497970
 AudioSource:
   m_ObjectHideFlags: 0

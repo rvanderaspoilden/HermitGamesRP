@@ -169,6 +169,7 @@ namespace com.hermitGames.rp
 
             if (!isMine) {
                 player.GetComponent<Player>().enabled = false;
+                player.GetComponent<PlayerInteraction>().enabled = false;
                 player.GetComponent<CharacterController>().enabled = false;
                 player.GetComponentInChildren<Camera>().enabled = false;
                 player.GetComponentInChildren<AudioListener>().enabled = false;
