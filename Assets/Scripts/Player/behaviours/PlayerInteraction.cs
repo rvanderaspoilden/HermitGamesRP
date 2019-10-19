@@ -18,8 +18,8 @@ namespace com.hermitGames.rp
             RaycastHit hit;
             Debug.DrawRay(this.camera.transform.position, this.camera.transform.forward, Color.red);
             if (Physics.Raycast(this.camera.transform.position, this.camera.transform.forward, out hit, 10f)) {
-                if (hit.collider) {
-                    Debug.Log(hit.collider.name);
+                if (hit.collider.tag == "Door" && Input.GetKeyDown(KeyCode.E)) {
+                    hit.collider.GetComponentInParent<Door>().OpenOrClose();
                 }
             }
         }

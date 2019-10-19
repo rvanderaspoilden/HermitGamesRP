@@ -16,8 +16,8 @@ namespace com.hermitGames.rp
         [SerializeField] private Quaternion initialRotation;
         //[SerializeField] private LockState lockState = LockState.UNLOCKED;
 
-        private Quaternion backwardRotation;
-        private Quaternion forwardRotation;
+        [SerializeField] private Quaternion backwardRotation;
+        [SerializeField] private Quaternion forwardRotation;
 
         private float speed = 2f;
 
@@ -32,13 +32,7 @@ namespace com.hermitGames.rp
             this.networkIdentity = GetComponent<NetworkIdentity>();
             this.networkAnimator = GetComponent<NetworkAnimator>();
 
-            this.networkState.OnStateChanged += UpdateState;
-        }
-
-        private void Update() {
-            if (Input.GetKeyDown(KeyCode.E)) {
-                this.OpenOrClose();
-            }
+            this.networkState.OnStateChanged += UpdateState;   
         }
 
         private void FixedUpdate() {
@@ -72,22 +66,34 @@ namespace com.hermitGames.rp
         }
 
         public void UpdateState(Dictionary<string, string> state) {
-            int.TryParse(state["angleAmplitude"], out this.angleAmplitude);
-            System.Enum.TryParse(state["direction"], out this.direction);
-            System.Enum.TryParse(state["doorState"], out this.doorState);
+            if(state != null) {
+                int.TryParse(state["angleAmplitude"], out this.angleAmplitude);
+                System.Enum.TryParse(state["direction"], out this.direction);
+                System.Enum.TryParse(state["doorState"], out this.doorState);
 
-            this.initialRotation = this.transform.rotation;
+                this.initialRotation = this.transform.rotation;
 
-            float.TryParse(state["initialRotationX"], out this.initialRotation.x);
-            float.TryParse(state["initialRotationY"], out this.initialRotation.y);
-            float.TryParse(state["initialRotationZ"], out this.initialRotation.z);
-            float.TryParse(state["initialRotationW"], out this.initialRotation.w);
+                float.TryParse(state["initialRotationX"], out this.initialRotation.x);
+                float.TryParse(state["initialRotationY"], out this.initialRotation.y);
+                float.TryParse(state["initialRotationZ"], out this.initialRotation.z);
+                float.TryParse(state["initialRotationW"], out this.initialRotation.w);
 
-            this.forwardRotation = Quaternion.Euler(0, this.initialRotation.eulerAngles.y + this.angleAmplitude, 0);
-            this.backwardRotation = Quaternion.Euler(0, this.initialRotation.eulerAngles.y - this.angleAmplitude, 0);
+                this.forwardRotation = Quaternion.Euler(0, this.initialRotation.eulerAngles.y + this.angleAmplitude, 0);
+                this.backwardRotation = Quaternion.Euler(0, this.initialRotation.eulerAngles.y - this.angleAmplitude, 0);
 
-            if (!this.isLoaded) {
-                this.isLoaded = true;
+                if (!this.isLoaded) {
+                    this.isLoaded = true;
+                }
+            } else {
+                this.initialRotation = this.transform.rotation;
+                this.forwardRotation = Quaternion.Euler(0, this.initialRotation.eulerAngles.y + this.angleAmplitude, 0);
+                this.backwardRotation = Quaternion.Euler(0, this.initialRotation.eulerAngles.y - this.angleAmplitude, 0);
+
+                this.SetupState();
+
+                if (!this.isLoaded) {
+                    this.isLoaded = true;
+                }
             }
         }
 
