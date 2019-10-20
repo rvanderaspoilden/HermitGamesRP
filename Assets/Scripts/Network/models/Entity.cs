@@ -13,6 +13,7 @@ namespace com.hermitGames.rp
         public string prefabName;
         public Vector3Json position;
         public Vector3Json rotation;
+        public bool isMasterClient;
 
         [SerializeField]
         public SetAnimationRequest animation;

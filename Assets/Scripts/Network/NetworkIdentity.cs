@@ -10,10 +10,12 @@ namespace com.hermitGames.rp
 
         private string networkId; // equals to entityId server side
         private bool isLocal;
+        [SerializeField] private bool isMasterClient;
 
-        public void Setup(string id, bool isMine) {
+        public void Setup(string id, bool isMine, bool isMasterClient) {
             this.networkId = id;
             this.isLocal = isMine;
+            this.isMasterClient = isMasterClient;
         }
 
         public void SetNetworkID(string id) {
@@ -26,6 +28,14 @@ namespace com.hermitGames.rp
 
         public bool IsMine() {
             return this.isLocal;
+        }
+
+        public bool GetIsMasterClient() {
+            return this.isMasterClient;
+        }
+
+        public void SetIsMasterClient(bool value) {
+            this.isMasterClient = value;
         }
 
         public void SetIsLocal(bool value) {

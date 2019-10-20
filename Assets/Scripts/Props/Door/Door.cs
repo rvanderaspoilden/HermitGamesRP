@@ -36,7 +36,7 @@ namespace com.hermitGames.rp
         }
 
         private void FixedUpdate() {
-            if (this.isLoaded) {
+            if (this.isLoaded && GameManager.localPlayer.GetIsMasterClient()) {
                 if (this.doorState == DoorState.OPENED) {
                     switch (this.direction) {
                         case DoorDirection.FORWARD:
