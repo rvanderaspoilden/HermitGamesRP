@@ -23,7 +23,7 @@ namespace com.hermitGames.rp
 
         // Update is called once per frame
         void Update() {
-            if(this.identity.IsMine()) {
+            if(this.identity.IsMine() || (!GameManager.isBuildingMode && this.transform.tag != "Player" && GameManager.localPlayer.GetIsMasterClient())) {
                 if(this.syncPosition) {
                     if (Vector3.Distance(this.oldPosition, this.transform.position) >= 0.01f) {
                         this.oldPosition = this.transform.position;

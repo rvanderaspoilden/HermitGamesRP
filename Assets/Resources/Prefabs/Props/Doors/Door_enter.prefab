@@ -11,9 +11,10 @@ GameObject:
   - component: {fileID: 5229814890365433396}
   - component: {fileID: 7531045981197246671}
   - component: {fileID: 7554002145176645021}
+  - component: {fileID: 7695039392397581587}
   m_Layer: 0
   m_Name: porte_basique
-  m_TagString: Untagged
+  m_TagString: Door
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -78,6 +79,19 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!65 &7695039392397581587
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1403999328849952776}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.01619058, y: 0.0011878784, z: 0.04066412}
+  m_Center: {x: 0.008095336, y: 0.0000000028626665, z: 0.0203318}
 --- !u!1 &1510212009138191564
 GameObject:
   m_ObjectHideFlags: 0
@@ -88,9 +102,14 @@ GameObject:
   m_Component:
   - component: {fileID: 2498934889603337951}
   - component: {fileID: -4524933537382337135}
+  - component: {fileID: -4523440622561713057}
+  - component: {fileID: 2629210969012278031}
+  - component: {fileID: 7017014745400179430}
+  - component: {fileID: 3593998234201631206}
+  - component: {fileID: 2678212856698469093}
   m_Layer: 0
   m_Name: Door_enter
-  m_TagString: Untagged
+  m_TagString: Door
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -125,6 +144,79 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   type: 3
+--- !u!114 &-4523440622561713057
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1510212009138191564}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e204efac8a4205443aa206a4bada06ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  angleAmplitude: 90
+  direction: 1
+  doorState: 1
+  initialRotation: {x: 0, y: 0, z: 0, w: 1}
+--- !u!114 &2629210969012278031
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1510212009138191564}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 829c1612bb5bbc443b3ab7a4eba2d450, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &7017014745400179430
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1510212009138191564}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1df37f543336e7c43862fec806151d03, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncPosition: 0
+  syncRotation: 1
+--- !u!95 &3593998234201631206
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1510212009138191564}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: e6ca9f603c0be44169f770867d5dcaf6, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &2678212856698469093
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1510212009138191564}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1086fdae013938b46ab5438a03e08b63, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2684610830332308680
 GameObject:
   m_ObjectHideFlags: 0
@@ -138,7 +230,7 @@ GameObject:
   - component: {fileID: 6895310645097212120}
   m_Layer: 0
   m_Name: doorknob
-  m_TagString: Untagged
+  m_TagString: Door
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -216,7 +308,7 @@ GameObject:
   - component: {fileID: 5023114689674263690}
   m_Layer: 0
   m_Name: porte_basique.001
-  m_TagString: Untagged
+  m_TagString: Door
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

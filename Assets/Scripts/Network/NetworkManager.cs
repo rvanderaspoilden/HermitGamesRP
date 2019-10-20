@@ -32,6 +32,7 @@ namespace com.hermitGames.rp
             this.socketIO.On("Packet::EntityDoAnimation", this.EntityDoAnimation);
             this.socketIO.On("Packet::EntityTalk", this.EntityTalk);
             this.socketIO.On("Packet::EntityStateChanged", this.EntityStateChanged);
+            this.socketIO.On("Packet::UpdateMasterClient", this.UpdateMasterClient);
         }
 
 
@@ -69,6 +70,13 @@ namespace com.hermitGames.rp
             this.localUser = null;
             this.entities = null;
             SceneManager.LoadScene("Launcher");
+        }
+
+        public void UpdateMasterClient(SocketIOEvent e) {
+            User user = JsonUtility.FromJson<User>(e.data.ToString());
+
+            Debug.Log("Master client changed for id : " + user.id);
+            GameManager.instance.MasterClientChanged(user.id);
         }
 
         private void EntityTalk(SocketIOEvent e) {

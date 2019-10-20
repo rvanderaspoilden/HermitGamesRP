@@ -25,7 +25,8 @@ namespace com.hermitGames.rp
                     this.animator.SetBool(req.variableName, bool.Parse(req.variableValue));
                     break; 
                 case VariableType.FLOAT:
-                    this.animator.SetFloat(req.variableName, float.Parse(req.variableValue));
+                    if(req.variableValue != "") 
+                        this.animator.SetFloat(req.variableName, float.Parse(req.variableValue));
                     break;
                 case VariableType.TRIGGER:
                     this.animator.SetTrigger(req.variableName);

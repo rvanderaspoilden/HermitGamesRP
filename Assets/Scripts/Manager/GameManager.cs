@@ -16,11 +16,12 @@ namespace com.hermitGames.rp
         public static Dictionary<string, GameObject> prefabDatabase = new Dictionary<string, GameObject>();
 
         private CameraBuilding cameraBuilding;
-        private bool isBuildingMode;
 
         private BuildUIManager buildUIManager;
 
-        private GameObject localPlayer;
+        public static NetworkIdentity localPlayer;
+
+        public static bool isBuildingMode;
 
         public static GameManager instance;
 
@@ -42,9 +43,9 @@ namespace com.hermitGames.rp
 
         private void Update() {
             if (Input.GetKeyDown(KeyCode.B)) {
-                this.isBuildingMode = !this.isBuildingMode;
+                isBuildingMode = !isBuildingMode;
 
-                if (this.isBuildingMode) {
+                if (isBuildingMode) {
                     this.SwitchToBuildMode();
                 } else {
                     this.SwitchToPlayerMode();
@@ -55,16 +56,16 @@ namespace com.hermitGames.rp
         public void SwitchToBuildMode() {
             this.buildUIManager.gameObject.SetActive(true);
             this.cameraBuilding.gameObject.SetActive(true);
-            this.cameraBuilding.transform.position = new Vector3(this.localPlayer.transform.position.x, 20, this.localPlayer.transform.position.z);
-            this.localPlayer.GetComponentInChildren<Camera>().enabled = false;
-            this.localPlayer.GetComponent<Player>().enabled = false;
-            this.localPlayer.GetComponent<PlayerRotation>().enabled = false;
+            this.cameraBuilding.transform.position = new Vector3(localPlayer.transform.position.x, 20, localPlayer.transform.position.z);
+            localPlayer.GetComponentInChildren<Camera>().enabled = false;
+            localPlayer.GetComponent<Player>().enabled = false;
+            localPlayer.GetComponent<PlayerRotation>().enabled = false;
         }
 
         public void SwitchToPlayerMode() {
-            this.localPlayer.GetComponentInChildren<Camera>().enabled = true;
-            this.localPlayer.GetComponent<Player>().enabled = true;
-            this.localPlayer.GetComponent<PlayerRotation>().enabled = true;
+            localPlayer.GetComponentInChildren<Camera>().enabled = true;
+            localPlayer.GetComponent<Player>().enabled = true;
+            localPlayer.GetComponent<PlayerRotation>().enabled = true;
             this.cameraBuilding.gameObject.SetActive(false);
             this.buildUIManager.gameObject.SetActive(false);
         }
@@ -83,6 +84,17 @@ namespace com.hermitGames.rp
 
         public void EntityTalk(VoicePacket packet) {
             this.networkVoices[packet.entityId].PlayVoiceSound(packet.data, packet.channels);
+        }
+
+        public void MasterClientChanged(string id) {
+            foreach (NetworkIdentity identity in this.networkIdentities.Values) {
+                identity.SetIsMasterClient(identity.GetNetworkID() == id);
+            }
+
+            if (localPlayer.GetNetworkID() == id) {
+                Debug.Log("I'm Master client");
+                localPlayer.SetIsMasterClient(true);
+            }
         }
 
         public void EntityStateChanged(EntityState state) {
@@ -122,7 +134,8 @@ namespace com.hermitGames.rp
             GameObject entityObject = Instantiate(prefabDatabase[entity.prefabName], position, Quaternion.Euler(rotation));
 
             NetworkIdentity networkIdentity = entityObject.GetComponent<NetworkIdentity>();
-            networkIdentity.Setup(entity.id, isMine);
+            networkIdentity.Setup(entity.id, isMine, entity.isMasterClient);
+
             this.networkIdentities.Add(entity.id, networkIdentity);
 
             NetworkAnimator networkAnimator = entityObject.GetComponent<NetworkAnimator>();
@@ -169,11 +182,12 @@ namespace com.hermitGames.rp
 
             if (!isMine) {
                 player.GetComponent<Player>().enabled = false;
+                player.GetComponent<PlayerInteraction>().enabled = false;
                 player.GetComponent<CharacterController>().enabled = false;
                 player.GetComponentInChildren<Camera>().enabled = false;
                 player.GetComponentInChildren<AudioListener>().enabled = false;
             } else {
-                this.localPlayer = player;
+                localPlayer = player.GetComponent<NetworkIdentity>();
             }
 
             return player;

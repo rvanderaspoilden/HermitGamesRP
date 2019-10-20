@@ -12,8 +12,8 @@ GameObject:
   - component: {fileID: 666849812229982480}
   - component: {fileID: 8246972901402499154}
   m_Layer: 0
-  m_Name: Cylinder
-  m_TagString: Untagged
+  m_Name: doorknob
+  m_TagString: Door
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -89,9 +89,10 @@ GameObject:
   - component: {fileID: 3987260811124919013}
   - component: {fileID: 3099240356646770344}
   - component: {fileID: 609944604697017963}
+  - component: {fileID: 7350188126743646445}
   m_Layer: 0
   m_Name: porte_basique
-  m_TagString: Untagged
+  m_TagString: Door
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -156,6 +157,19 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!65 &7350188126743646445
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6097268469829243732}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.012752871, y: 0.0011878781, z: 0.033637065}
+  m_Center: {x: 0.006376481, y: 0.0000000023393794, z: 0.02081032}
 --- !u!1 &9129399954479354645
 GameObject:
   m_ObjectHideFlags: 0
@@ -166,9 +180,14 @@ GameObject:
   m_Component:
   - component: {fileID: 330486200754893592}
   - component: {fileID: -2141915364618265889}
+  - component: {fileID: 849573845493007245}
+  - component: {fileID: -3025592286843164684}
+  - component: {fileID: 3695845174202398458}
+  - component: {fileID: -7352366800685648609}
+  - component: {fileID: 2034982767395502049}
   m_Layer: 0
   m_Name: Door_wc
-  m_TagString: Untagged
+  m_TagString: Door
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -202,3 +221,76 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   type: 3
+--- !u!114 &849573845493007245
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9129399954479354645}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 829c1612bb5bbc443b3ab7a4eba2d450, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &-3025592286843164684
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9129399954479354645}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1df37f543336e7c43862fec806151d03, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncPosition: 1
+  syncRotation: 1
+--- !u!114 &3695845174202398458
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9129399954479354645}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e204efac8a4205443aa206a4bada06ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  angleAmplitude: 90
+  direction: 0
+  doorState: 1
+  initialRotation: {x: 0, y: 0, z: 0, w: 1}
+--- !u!95 &-7352366800685648609
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9129399954479354645}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: e6ca9f603c0be44169f770867d5dcaf6, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &2034982767395502049
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9129399954479354645}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1086fdae013938b46ab5438a03e08b63, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
