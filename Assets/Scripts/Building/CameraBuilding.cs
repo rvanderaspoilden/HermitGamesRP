@@ -96,7 +96,8 @@ namespace com.hermitGames.rp
                             Debug.Log(networkIdentities.Count);
 
                             networkIdentities.ForEach((NetworkIdentity identity) => {
-                                GameManager.instance.CmdRegisterEntity(GameManager.prefabDatabase[identity.name], identity.transform.position, identity.transform.rotation.eulerAngles);
+                                if(GameManager.prefabDatabase.ContainsKey(identity.name))
+                                    GameManager.instance.CmdRegisterEntity(GameManager.prefabDatabase[identity.name], identity.transform.position, identity.transform.rotation.eulerAngles);
                             });
                         }
                     } else {
