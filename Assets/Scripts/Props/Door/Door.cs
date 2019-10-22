@@ -71,12 +71,14 @@ namespace com.hermitGames.rp
                 System.Enum.TryParse(state["direction"], out this.direction);
                 System.Enum.TryParse(state["doorState"], out this.doorState);
 
-                this.initialRotation = this.transform.rotation;
+                float x, y, z, w;
 
-                float.TryParse(state["initialRotationX"], out this.initialRotation.x);
-                float.TryParse(state["initialRotationY"], out this.initialRotation.y);
-                float.TryParse(state["initialRotationZ"], out this.initialRotation.z);
-                float.TryParse(state["initialRotationW"], out this.initialRotation.w);
+                float.TryParse(state["initialRotationX"], out x);
+                float.TryParse(state["initialRotationY"], out y);
+                float.TryParse(state["initialRotationZ"], out z);
+                float.TryParse(state["initialRotationW"], out w);
+
+                this.initialRotation = new Quaternion(x,y,z,w);
 
                 this.forwardRotation = Quaternion.Euler(0, this.initialRotation.eulerAngles.y + this.angleAmplitude, 0);
                 this.backwardRotation = Quaternion.Euler(0, this.initialRotation.eulerAngles.y - this.angleAmplitude, 0);
